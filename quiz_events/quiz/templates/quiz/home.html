@@ -1,0 +1,76 @@
+{% extends 'quiz/base.html' %}
+{% block title %}Quiz Event App — Home Page{% endblock title %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">
+        Welcome, {{ request.user.first_name }} {{ request.user.last_name }} 👋
+        </h1>
+        <p class="text-xl font-semibold text-gray-700 mt-1">
+            Here are your quiz submissions.
+        </p>
+        <p class="text-lg text-gray-600 mt-2">
+            Total Submissions: <span class="font-bold text-gray-800">{{ total_submissions }}</span>
+        </p>
+    </div>
+
+    {% if messages %}
+        <div class="mb-6 space-y-3">
+            {% for message in messages %}
+                <div class="px-4 py-3 rounded-lg text-white
+                    {% if message.tags == 'success' %} bg-green-600
+                    {% elif message.tags == 'error' %} bg-red-600
+                    {% elif message.tags == 'warning' %} bg-yellow-500
+                    {% else %} bg-blue-600 {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Submissions Section -->
+    {% if submissions %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {% for sub in submissions %}
+                <div class="bg-white shadow-lg rounded-xl p-5 hover:shadow-2xl transition">
+
+                    <h2 class="text-xl font-semibold text-blue-700">
+                        {{ sub.quiz.title }}
+                    </h2>
+
+                    <p class="text-gray-600 mt-1">
+                        Submitted on:
+                        <span class="font-medium text-gray-800">
+                            {{ sub.submitted_at|date:"M d, Y h:i A" }}
+                        </span>
+                    </p>
+
+                    <p class="text-lg font-bold mt-3">
+                        Score:
+                        <span class="text-green-600">{{ sub.score }}</span>
+                    </p>
+
+                    <a href="{% url 'quiz_result' sub.id %}"
+                       class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg 
+                              hover:bg-blue-700 transition">
+                        View Result
+                    </a>
+                </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="flex flex-col justify-center items-center min-h-[200px] space-y-4">
+            <p class="text-gray-700 text-lg text-center">
+                You have not submitted any quiz yet.
+            </p>
+            <a href="{% url 'quiz_list' %}"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition text-lg">
+                Start Quiz
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
