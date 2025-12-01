@@ -91,7 +91,7 @@ project/
 
 ### Step 1: Clone the Git Repository  
 ```sh
-git clone https://github.com/<your-username>/Quiz-Event-App-Django.git
+git clone https://github.com/balasbhautik/Quiz-Event-App-Django.git
 cd Quiz-Event-App-Django
 ```
 
